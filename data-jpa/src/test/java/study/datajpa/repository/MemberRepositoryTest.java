@@ -47,4 +47,19 @@ public class MemberRepositoryTest {
         long deletedCount = memberRepository.count();
         assertThat(deletedCount).isEqualTo(0);
     }
+
+    @Test
+    public void findHelloBy() { List<Member> helloBy = memberRepository.findTop3HelloBy(); }
+
+    @Test
+    public void testNamedQuery() {
+        Member member1 = new Member("member1");
+        Member member2 = new Member("member2");
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        List<Member> result = memberRepository.findByUsername("AAA");
+        Member findMember = result.get(0);
+        assertThat(findMember).isEqualTo(member1);
+    }
 }

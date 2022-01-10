@@ -26,3 +26,6 @@ JPA Named Query
 ----------
 - <img alt="메소드에Query" src ="./doc/img/메소드에Query.PNG" width ="400" height ="400"/>
 - 실행할 메서드에 정적 쿼리를 직접 작성하므로 이름 없는 Named 쿼리라 할 수 있음
+
+특정값 혹은 DTO로 조회하기
+-------------

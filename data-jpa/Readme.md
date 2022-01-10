@@ -21,3 +21,8 @@ JPA Named Query
 ----------
 - 정적 쿼리라서 Application 로딩 시점에 타입 에러를 알 수 있음. 
 - 나머지 이점은 별로..(뭔가 어색한 사용법)
+
+@Query, 리포지토리 메소드에 쿼리 정의하기
+----------
+- <img alt="메소드에Query" src ="./doc/img/메소드에Query.PNG" width ="400" height ="400"/>
+- 실행할 메서드에 정적 쿼리를 직접 작성하므로 이름 없는 Named 쿼리라 할 수 있음

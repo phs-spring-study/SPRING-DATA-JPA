@@ -26,3 +26,18 @@
 - 단건은 없으면 null or optional, 2개 이상이면 에러
   - spring에서 jpa exception 추상화해서 에러를 던진다.
 - mono, flux 쓰려면  R2DBC 사용
+
+## 페이징
+- Page, Slice
+- 쿼리 최적화 위해 countQuery 쿼리 사용 가능
+- page.map 으로 dto 변환하자
+
+## 벌크성 수정 쿼리
+- @Modifying과 @Query로 벌크 update 사용 가능
+- 영속성 컨텍스트와 싱크 작업이 필요
+
+## @EntityGraphh
+
+## JPA Hint & Lock
+- 영속성 컨텍스트 비교를 위한 snapshot을 안 만들 수 있음
+  - @Transaction read only 하면 되는거 아닌가?

@@ -49,3 +49,12 @@ JPA Named Query
 - Page <-> Slice 변환도 간편!
 - count 쿼리를 분리해서 JOIN이 많이 일어나는 상황에서 최적화도 가능!
 - Page 인덱스 1이 아니라 0부터 시작한다!
+
+벌크성 수정 쿼리
+-------------
+- @Modifying 어노테이션
+- Bulk 연산은 영속성을 무시하고 동작하기 때문에 주의해서 사용해야함
+  - 벌크연산 이후 em.flush() & em.clear()를 호출해서 영속성 컨텍스트를 리로드해야함!
+    - JPQL 수행 전에 flush가 자동호출되므로.. flush는 생략해도 되지만.. clear는 생략할 수 없음!
+  - 스프링 데이터 JPA에서는 @Modifying(clearAutomatically = true)를 활용해도 된다! 
+ 

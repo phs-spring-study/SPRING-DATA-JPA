@@ -65,3 +65,10 @@ EntityGraph
     - N+1 문제 / fetch join
 - fetch join 쿼리 짜는게 귀찮으니 @EntityGraph 어노테이션을 사용할 수 있다.
 - NamedQuery와 마찬가지로 NamedEntityGraph 사용 가능
+
+
+JPA Hint & Lock
+-------------
+- Dirty check시, 메모리에 2개의 데이터가 올라갈 수 밖에 없음(원본, 수정본)
+  - QueryHint 어노테이션으로 readOnly 설정을 통해 읽기 전용 데이터 1개만 메모리에 로드 가능!
+- Lock 어노테이션으로 Lcok 기능을 사용할 수 있다. (자주 사용할까 ?) 

@@ -58,3 +58,10 @@ JPA Named Query
     - JPQL 수행 전에 flush가 자동호출되므로.. flush는 생략해도 되지만.. clear는 생략할 수 없음!
   - 스프링 데이터 JPA에서는 @Modifying(clearAutomatically = true)를 활용해도 된다! 
  
+EntityGraph
+-------------
+- 이전 강의와 겹치는 내용이 많음
+  - lazy load 관련 이슈
+    - N+1 문제 / fetch join
+- fetch join 쿼리 짜는게 귀찮으니 @EntityGraph 어노테이션을 사용할 수 있다.
+- NamedQuery와 마찬가지로 NamedEntityGraph 사용 가능

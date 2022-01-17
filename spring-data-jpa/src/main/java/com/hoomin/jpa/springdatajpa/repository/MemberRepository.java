@@ -12,7 +12,7 @@ import com.hoomin.jpa.springdatajpa.dto.MemberDto;
 import com.hoomin.jpa.springdatajpa.entity.Member;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 	List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
 	@Query(name = "Member.findByUsername")

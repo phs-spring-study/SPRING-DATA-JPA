@@ -57,3 +57,27 @@
 ## 페이징과 정렬
 - pageable로 정렬도 가능
 - 페이징 정보 둘 이상도 가능 (접두사)
+
+## 스프링 데이터 JPA 구현체 분석
+- SimpleJpaRepository 분석하자
+- save 자체가 @Transactional이 있음
+- @Transacional(readonly = true) 사용하면 플러시 생략 -> 성능 향상
+
+## 새로운 엔티티 구별 방법
+- 식별자가 null이나 '0'
+- Persistable
+
+## 나머지 기능들
+- 동적 쿼리 기능
+  - Specifications
+  - Query By Example
+    - 동적쿼리는 QueryDSL 사용하자
+- Projections
+  - dto만 조회하고 싶을 때 사용
+    - submission의 source만 가져올때?
+    - JdkDynamicAopProxy
+    - 프록시 등의 기술로 interface로 가짜 객체를 만듦
+- 네이티브 쿼리
+  - 궁극의 방법, 사용하지 않는게 좋음
+  - 정렬 안 될 수 있음
+  - Projections와 같이 쓰는걸 추천

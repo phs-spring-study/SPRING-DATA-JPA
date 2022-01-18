@@ -140,3 +140,47 @@ Web 확장 - 페이징과 정렬
   - 식별자가 자바 기본 타입일 때 0 으로 판단
   - Persistable 인터페이스를 구현해서 판단 로직 변경 가능
   - Custom ID를 구현할 경우 Persistable 인터페이스를 구현하자(getId, isNew)
+
+나머지 기능들
+-------------
+> 편하게 들어보자. 실무에서 사용이 애매함.
+- Specification(명세)
+- Query By Example
+- Projections
+- 네이티브 쿼리
+
+
+- Specification
+  - JPA Criteria를 활용해서 DDD 개념을 지원
+
+- Query By Example
+  - RDB에서 NOSQL로 바뀌더라도 그대로 사용가능하도록 추상화되어 있음.
+  - 신선하지만, 매칭 조건의 한계가 있고 외부 조인(LEFT JOIN)을 지원하지 않음.
+
+- Projections
+  - 엔티티 대신에 DTO를 편리하게 조회할때 사용.
+  - 전체 엔티티가 아닌 특정 필드만 조회하고 싶을 때.
+  - Open Projection
+    - 엔티티 전체를 다 조회한 후 필요한 필드를 조합해서 사용.
+  - Close Projection
+    - 특정 필드만 조회해옴.
+  - 동적 Projection
+    - 제네릭을 활용하여 미리 만들어둔 여러개의 데이터 타입 형태로 조회해올 수 있음.(오? 쓸만한데?)
+      - <T> List<T> findProjectionsByUsername(String username, Class<T> type);
+  - Nested Projection
+    - 주의
+      - 프로젝션 대상이 root 엔티티면, JPQL SELECT 절 최적화 가능
+      - 프로젝션 대상이 ROOT가 아니면, LEFT OUTER JOIN 처리 / 모든 필드를 SELECT해서 엔티티로 조회한 다음에 계산
+
+- 네이티브 쿼리
+  - 페이징 가능 
+  - 가급적 네이티브 쿼리는 사용하지 않는게 좋음, 정말 어쩔 수 없을 때 사용
+  - 반환 타입
+    - Object[]
+    - Tuple
+    - DTO(스프링 데이터 인터페이스 Projections 지원)
+  - 제약
+    - Sort 파라미터를 통한 정렬이 정상 동작하지 않을 수 있음(믿지 말고 직접 처리)
+    - JPQL처럼 애플리케이션 로딩 시점에 문법 확인 불가
+    - 동적 쿼리 불가
+  - 정적 쿼리일 경우, Projection과 조합해서 사용할 수 있음. 

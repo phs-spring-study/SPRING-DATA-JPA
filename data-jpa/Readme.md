@@ -39,6 +39,40 @@ JPA Named Query
 - 컬렉션 바인딩
   - 실무에서 빈번히 사용 된다.
 
+순수 JPA 페이징과 정렬
+-------------
+
+
+스프링 데이터 JPA 페이징과 정렬
+-------------
+- 오! 편하군!
+- Page <-> Slice 변환도 간편!
+- count 쿼리를 분리해서 JOIN이 많이 일어나는 상황에서 최적화도 가능!
+- Page 인덱스 1이 아니라 0부터 시작한다!
+
+벌크성 수정 쿼리
+-------------
+- @Modifying 어노테이션
+- Bulk 연산은 영속성을 무시하고 동작하기 때문에 주의해서 사용해야함
+  - 벌크연산 이후 em.flush() & em.clear()를 호출해서 영속성 컨텍스트를 리로드해야함!
+    - JPQL 수행 전에 flush가 자동호출되므로.. flush는 생략해도 되지만.. clear는 생략할 수 없음!
+  - 스프링 데이터 JPA에서는 @Modifying(clearAutomatically = true)를 활용해도 된다! 
+ 
+EntityGraph
+-------------
+- 이전 강의와 겹치는 내용이 많음
+  - lazy load 관련 이슈
+    - N+1 문제 / fetch join
+- fetch join 쿼리 짜는게 귀찮으니 @EntityGraph 어노테이션을 사용할 수 있다.
+- NamedQuery와 마찬가지로 NamedEntityGraph 사용 가능
+
+
+JPA Hint & Lock
+-------------
+- Dirty check시, 메모리에 2개의 데이터가 올라갈 수 밖에 없음(원본, 수정본)
+  - QueryHint 어노테이션으로 readOnly 설정을 통해 읽기 전용 데이터 1개만 메모리에 로드 가능!
+- Lock 어노테이션으로 Lcok 기능을 사용할 수 있다. (자주 사용할까 ?) 
+
 사용자 정의 리포지토리 구현
 -------------
 - 스프링 데이터 JPA 리포지토리는 인터페이스만 정의하고 구현체는 스프링이 자동 생성

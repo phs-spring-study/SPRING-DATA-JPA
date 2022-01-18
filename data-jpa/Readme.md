@@ -86,3 +86,10 @@ JPA Hint & Lock
 > XXXXRepositoryImpl 관례를 사용하면 JPA가 Search 해서 구현체 메소드를 호출해줌.
 > 화면용 Repository와 비즈니스 로직용 Repository를 구분하자. (MemberRepository/MemberQueryRepository)
 
+JPA Auditing
+-------------
+- 엔티티를 생성, 변경할 때 변경한 사람과 시간을 추적하고 싶으면?
+  - 등록일
+  - 수정일
+  - 등록자
+  - 수정자

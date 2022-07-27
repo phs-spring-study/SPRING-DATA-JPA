@@ -9,13 +9,17 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -317,4 +321,100 @@ class MemberRepositoryTest {
 		List<Member> result = memberRepository.findMemberCustom();
 	}
 
+	@Test
+	public void specBasic() {
+		// given
+		Team teamA = new Team("teamA");
+		em.persist(teamA);
+
+		Member m1 = new Member("m1", 0, teamA);
+		Member m2 = new Member("m2", 0, teamA);
+		em.persist(m1);
+		em.persist(m2);
+
+		em.flush();
+		em.clear();
+
+		// when
+		Specification<Member> spec = MemberSpec.username("m1").and(MemberSpec.teamName("teamA"));
+		List<Member> result = memberRepository.findAll(spec);
+		assertThat(result.size()).isEqualTo(1);
+	}
+
+	@Test
+	public void queryByExample() {
+		// given
+		Team teamA = new Team("teamA");
+		em.persist(teamA);
+
+		Member m1 = new Member("m1", 0, teamA);
+		Member m2 = new Member("m2", 0, teamA);
+		em.persist(m1);
+		em.persist(m2);
+
+		em.flush();
+		em.clear();
+
+		// when
+		// Probe
+		Member member = new Member("m1"); // 멤버 엔티티 자체가 검색 조건이 됨. (저장 용이 아니라 검색용 도메인 객체로 만든다)
+		Team team = new Team("teamA");
+		member.setTeam(team);
+
+		ExampleMatcher matcher = ExampleMatcher.matching()
+			.withIgnorePaths("age"); // age 라는 속성은 다 무시한다.
+
+		Example<Member> example = Example.of(member, matcher); // example을 멤버 엔티티로 만든다.
+
+		List<Member> result = memberRepository.findAll(example); // 검색 조건을 이용한 example로 원하는 결과를 찾아 온다.
+
+		assertThat(result.get(0).getUsername()).isEqualTo("m1");
+	}
+
+	@Test
+	public void projections() {
+		// given
+		Team teamA = new Team("teamA");
+		em.persist(teamA);
+
+		Member m1 = new Member("m1", 0, teamA);
+		Member m2 = new Member("m2", 0, teamA);
+		em.persist(m1);
+		em.persist(m2);
+
+		em.flush();
+		em.clear();
+
+		List<NestedClosedProjections> result = memberRepository.findProjectionsByUsername("m1", NestedClosedProjections.class);
+
+		for (NestedClosedProjections nestedClosedProjections : result) {
+			String username = nestedClosedProjections.getUsername();
+			System.out.println("username = " + username);
+			String teamName = nestedClosedProjections.getTeam().getName();
+			System.out.println("teamName = " + teamName);
+		}
+	}
+
+	@Test
+	public void nativeQuery() {
+		// given
+		Team teamA = new Team("teamA");
+		em.persist(teamA);
+
+		Member m1 = new Member("m1", 0, teamA);
+		Member m2 = new Member("m2", 0, teamA);
+		em.persist(m1);
+		em.persist(m2);
+
+		em.flush();
+		em.clear();
+
+		// when
+		Page<MemberProjection> result = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+		List<MemberProjection> content = result.getContent();
+		for (MemberProjection memberProjection : content) {
+			System.out.println("memberProjection = " + memberProjection.getUsername());
+			System.out.println("memberProjection = " + memberProjection.getTeamName());
+		}
+	}
 }
